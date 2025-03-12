@@ -17,4 +17,11 @@ public static class Extensions
 
         return date >= start && date <= end;
     }
+
+    public static void Initialize(this MenuActionService menuActionService)
+    {
+        menuActionService.AddNewAction(1, "Add Task", "Main");
+        menuActionService.AddNewAction(2, "Show Task", "Main");
+        menuActionService.AddNewAction(3, "Exit", "Main");
+    }
 }

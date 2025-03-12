@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TaskManager;
 
-public class Task
+public class Task(string name, string Description, DateTime startDate, DateTime endDate)
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public DateTime StartDate { get; set; }
-    public DateTime EndDate { get; set; }
+    public Guid Id { get; set; } = new Guid();
+    public string Name { get; set; } = name;
+    public string Description { get; set; } = Description;
+    public DateTime StartDate { get; set; } = startDate;
+    public DateTime EndDate { get; set; } = endDate;
 }
