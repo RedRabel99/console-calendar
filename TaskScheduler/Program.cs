@@ -40,7 +40,7 @@ internal class Program
             switch (operation.KeyChar)
             {
                 case '1':
-                    Console.WriteLine("a");
+                    taskService.AddTaskView();
                     break;
                 case '2':
                     Console.WriteLine("b");

@@ -6,11 +6,23 @@ using System.Threading.Tasks;
 
 namespace TaskManager;
 
-public class Task(string name, string Description, DateTime startDate, DateTime endDate)
+public class Task
 {
     public Guid Id { get; set; } = new Guid();
-    public string Name { get; set; } = name;
-    public string Description { get; set; } = Description;
-    public DateTime StartDate { get; set; } = startDate;
-    public DateTime EndDate { get; set; } = endDate;
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+
+    public Task(string name, string description, DateTime startDate, DateTime endDate)
+    {
+        Name = name;
+        Description = description;
+        if(startDate > endDate)
+        {
+            throw new Exception();
+        }
+        StartDate = startDate;
+        EndDate = endDate;
+    }
 }
