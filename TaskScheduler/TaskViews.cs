@@ -61,10 +61,13 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
                 ShowAllTasksView();
                 break;
             case '2':
+                ShowTasksByYearView();
                 break;
             case '3':
+                ShowTasksByRangeView();
                 break;
             case '4':
+                ShowTasksByDateView();
                 break;
             case '5':
                 return;
@@ -125,7 +128,6 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
         var tasks = taskService.GetTaskByDate(date.Value);
         PrintTasks(tasks);
     }
-    //"Cancel"
 
     private static void PrintTasks(List<Task> tasks)
     {

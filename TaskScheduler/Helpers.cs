@@ -45,3 +45,14 @@ public static class Extensions
         menuActionService.AddNewAction(5, "Cancel", MenuTypes.TaskMenu);
     }
 }
+
+public class InvalidDateRangeException : Exception
+{
+    public InvalidDateRangeException() { }
+
+    public InvalidDateRangeException(string message)
+        : base(message) { }
+
+    public InvalidDateRangeException(string message, Exception inner)
+        : base(message, inner) { }
+}

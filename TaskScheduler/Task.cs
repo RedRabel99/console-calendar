@@ -20,7 +20,7 @@ public class Task
         Description = description;
         if(startDate > endDate)
         {
-            throw new Exception();
+            throw new InvalidDateRangeException("End date cannot be before start date.");
         }
         StartDate = startDate;
         EndDate = endDate;
