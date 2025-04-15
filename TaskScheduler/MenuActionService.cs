@@ -14,13 +14,13 @@ public class MenuActionService
         menuActions = new List<MenuAction>();
     }
 
-    public void AddNewAction(int i, string name, string menuName)
+    public void AddNewAction(int i, string name, MenuTypes menuName)
     {
         var menuAction = new MenuAction(i, name, menuName);
         menuActions.Add(menuAction);
     }
 
-    public List<MenuAction> GetMenuActionsByMenuName(string menuName)
+    public List<MenuAction> GetMenuActionsByMenuName(MenuTypes menuName)
     {
         return menuActions.Where(m => m.MenuName == menuName).ToList();
     }

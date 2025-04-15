@@ -22,16 +22,18 @@ internal class Program
         taskService.Add(task1);
         taskService.Add(task2);
 
+        
+
         var menuActionService = new MenuActionService();
         menuActionService.Initialize();
-
+        var taskViews = new TaskViews(taskService, menuActionService);
         Console.WriteLine("Welcome to Task Manager\n");
 
         while (true)
         {
             Console.WriteLine("Please enter what action do you want to take:");
 
-            foreach(var menuAction in menuActionService.GetMenuActionsByMenuName("Main"))
+            foreach(var menuAction in menuActionService.GetMenuActionsByMenuName(MenuTypes.MainMenu))
             {
                 Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
             }
@@ -40,10 +42,10 @@ internal class Program
             switch (operation.KeyChar)
             {
                 case '1':
-                    taskService.AddTaskView();
+                    taskViews.AddTaskView();
                     break;
                 case '2':
-                    Console.WriteLine("b");
+                    taskViews.GetTasksView();
                     break;
                 case '3':
                     return;
