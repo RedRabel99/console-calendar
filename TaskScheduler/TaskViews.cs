@@ -12,9 +12,9 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
     private TaskService taskService = taskService;
     private MenuActionService menuActionService = menuActionService;
     private readonly string[] formats = {
-        "yyyy-MM-dd HH:mm:ss",
-        "yyyy-MM-dd HH:mm",
-        "yyyy-MM-dd"
+        "dd-MM-yyyy HH:mm:ss",
+        "dd-MM-yyyy HH:mm",
+        "dd-MM-yyyy "
     };
 
     public void AddTaskView()
