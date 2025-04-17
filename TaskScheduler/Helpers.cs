@@ -31,19 +31,6 @@ public static class Extensions
             Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
         }
     }
-
-    public static void Initialize(this MenuActionService menuActionService)
-    {
-        menuActionService.AddNewAction(1, "Add Task", MenuTypes.MainMenu);
-        menuActionService.AddNewAction(2, "Show Task", MenuTypes.MainMenu);
-        menuActionService.AddNewAction(3, "Exit", MenuTypes.MainMenu);
-
-        menuActionService.AddNewAction(1, "Show all tasks", MenuTypes.TaskMenu);
-        menuActionService.AddNewAction(2, "Show tasks by given year", MenuTypes.TaskMenu);
-        menuActionService.AddNewAction(3, "Show tasks between given date range", MenuTypes.TaskMenu);
-        menuActionService.AddNewAction(4, "Show tasks on given day", MenuTypes.TaskMenu);
-        menuActionService.AddNewAction(5, "Cancel", MenuTypes.TaskMenu);
-    }
 }
 
 public class InvalidDateRangeException : Exception

@@ -8,15 +8,22 @@ using ConsoleTables;
 
 namespace TaskManager;
 
-public class TaskViews(TaskService taskService, MenuActionService menuActionService)
+public class TaskViews
 {
-    private TaskService taskService = taskService;
-    private MenuActionService menuActionService = menuActionService;
+    private TaskService taskService;
+    private MenuActionService menuActionService;
     private readonly string[] formats = {
         "dd-MM-yyyy HH:mm:ss",
         "dd-MM-yyyy HH:mm",
         "dd-MM-yyyy"
     };
+
+    public TaskViews(TaskService taskService)
+    {
+        this.taskService = taskService;
+        menuActionService = new MenuActionService();
+        InitializeTaskViewsActionService();
+    }
 
     public void AddTaskView()
     {
@@ -26,7 +33,7 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
         Console.WriteLine("\nEnter task description;");
         var description = Console.ReadLine();
 
-        
+
         Console.WriteLine("\nEnter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
 
         var startDate = ParseDate(Console.ReadLine(), formats);
@@ -89,11 +96,11 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
         var tasks = taskService.GetAllTasks();
         PrintTasks(tasks);
     }
-    
+
     private void ShowTasksByYearView()
     {
         Console.WriteLine("Enter a year:");
-        if(!int.TryParse(Console.ReadLine(), out var year))
+        if (!int.TryParse(Console.ReadLine(), out var year))
         {
             Console.WriteLine("\nGiven year is invalid, try again");
             return;
@@ -102,7 +109,7 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
         var tasks = taskService.GetTasksByYear(year);
         PrintTasks(tasks);
     }
-    
+
     private void ShowTasksByRangeView()
     {
         Console.WriteLine("Enter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
@@ -119,7 +126,7 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
         var endDate = ParseDate(Console.ReadLine(), formats);
         Console.WriteLine();
 
-        if(endDate == null)
+        if (endDate == null)
         {
             Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
         }
@@ -127,7 +134,7 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
         var tasks = taskService.GetTasksByDateRange(startDate.Value, endDate.Value);
         PrintTasks(tasks);
     }
-    
+
     private void ShowTasksByDateView()
     {
         Console.WriteLine("Enter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
@@ -144,7 +151,7 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
     private static void PrintTasks(List<Task> tasks)
     {
         var table = new ConsoleTable("Name", "Description", "Start Date", "EndDate", "Duration");
-        foreach(var task in tasks)
+        foreach (var task in tasks)
         {
             var duration = task.EndDate - task.StartDate;
             table.AddRow(
@@ -169,5 +176,14 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
             );
 
         return wasParseSuccesfull ? resultDate : null;
+    }
+
+    private void InitializeTaskViewsActionService()
+    {
+        menuActionService.AddNewAction(1, "Show all tasks", MenuTypes.TaskMenu);
+        menuActionService.AddNewAction(2, "Show tasks by given year", MenuTypes.TaskMenu);
+        menuActionService.AddNewAction(3, "Show tasks between given date range", MenuTypes.TaskMenu);
+        menuActionService.AddNewAction(4, "Show tasks on given day", MenuTypes.TaskMenu);
+        menuActionService.AddNewAction(5, "Cancel", MenuTypes.TaskMenu);
     }
 }

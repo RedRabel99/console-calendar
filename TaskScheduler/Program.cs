@@ -22,36 +22,8 @@ internal class Program
         taskService.Add(task1);
         taskService.Add(task2);
 
-        var menuActionService = new MenuActionService();
-        menuActionService.Initialize();
-        var taskViews = new TaskViews(taskService, menuActionService);
-        Console.WriteLine("Welcome to Task Manager\n");
-
-        while (true)
-        {
-            Console.WriteLine("Please enter what action do you want to take:");
-
-            foreach(var menuAction in menuActionService.GetMenuActionsByMenuName(MenuTypes.MainMenu))
-            {
-                Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
-            }
-            var operation = Console.ReadKey();
-            Console.WriteLine();
-
-            switch (operation.KeyChar)
-            {
-                case '1':
-                    taskViews.AddTaskView();
-                    break;
-                case '2':
-                    taskViews.GetTasksView();
-                    break;
-                case '3':
-                    return;
-                default:
-                    Console.WriteLine("Entered action does not exist");
-                    break;
-            }
-        }
+        var app = new App(taskService);
+        
+        app.Run();
     }
 }
