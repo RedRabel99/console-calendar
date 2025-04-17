@@ -22,8 +22,6 @@ internal class Program
         taskService.Add(task1);
         taskService.Add(task2);
 
-        
-
         var menuActionService = new MenuActionService();
         menuActionService.Initialize();
         var taskViews = new TaskViews(taskService, menuActionService);
@@ -38,6 +36,7 @@ internal class Program
                 Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
             }
             var operation = Console.ReadKey();
+            Console.WriteLine();
 
             switch (operation.KeyChar)
             {

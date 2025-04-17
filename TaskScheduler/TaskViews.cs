@@ -14,7 +14,7 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
     private readonly string[] formats = {
         "dd-MM-yyyy HH:mm:ss",
         "dd-MM-yyyy HH:mm",
-        "dd-MM-yyyy "
+        "dd-MM-yyyy"
     };
 
     public void AddTaskView()
@@ -22,24 +22,29 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
         Console.WriteLine("Enter task name:");
         var name = Console.ReadLine();
 
-        Console.WriteLine("Enter task description;");
+        Console.WriteLine("\nEnter task description;");
         var description = Console.ReadLine();
 
         
-        Console.WriteLine("Enter start date (yyyy-MM-dd [HH:mm[:ss]]): ");
+        Console.WriteLine("\nEnter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
 
         var startDate = ParseDate(Console.ReadLine(), formats);
+        Console.WriteLine();
+
         if (startDate is null)
         {
-            Console.WriteLine("Could not parse given date to correct format (yyyy-MM-dd [HH:mm[:ss]])");
+            Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
             Console.WriteLine("Your task has not been added");
             return;
         }
-        Console.WriteLine("Enter start date (yyyy-MM-dd [HH:mm[:ss]]): ");
+
+        Console.WriteLine("Enter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
         var endDate = ParseDate(Console.ReadLine(), formats);
+        Console.WriteLine();
+
         if (endDate is null)
         {
-            Console.WriteLine("Could not parse given date to correct format (yyyy-MM-dd [HH:mm[:ss]])");
+            Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
             Console.WriteLine("Your task has not been added");
             return;
         }
@@ -54,6 +59,7 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
         Extensions.PrintMenu(menuActionService, MenuTypes.TaskMenu);
 
         var key = Console.ReadKey().KeyChar;
+        Console.WriteLine();
 
         switch (key)
         {
@@ -88,28 +94,33 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
         Console.WriteLine("Enter a year:");
         if(!int.TryParse(Console.ReadLine(), out var year))
         {
-            Console.WriteLine("Given year is invalid, try again");
+            Console.WriteLine("\nGiven year is invalid, try again");
             return;
         }
+        Console.WriteLine();
         var tasks = taskService.GetTasksByYear(year);
         PrintTasks(tasks);
     }
     
     private void ShowTasksByRangeView()
     {
-        Console.WriteLine("Enter start date (yyyy-MM-dd [HH:mm[:ss]]): ");
+        Console.WriteLine("Enter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
         var startDate = ParseDate(Console.ReadLine(), formats);
+        Console.WriteLine();
+
         if (startDate == null)
         {
-            Console.WriteLine("Could not parse given date to correct format (yyyy-MM-dd [HH:mm[:ss]])");
+            Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
             return;
         }
 
-        Console.WriteLine("Enter end date (yyyy-MM-dd [HH:mm[:ss]]): ");
+        Console.WriteLine("Enter end date (dd-MM-yyyy [HH:mm[:ss]]): ");
         var endDate = ParseDate(Console.ReadLine(), formats);
+        Console.WriteLine();
+
         if(endDate == null)
         {
-            Console.WriteLine("Could not parse given date to correct format (yyyy-MM-dd [HH:mm[:ss]])");
+            Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
         }
 
         var tasks = taskService.GetTasksByDateRange(startDate.Value, endDate.Value);
@@ -118,11 +129,11 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
     
     private void ShowTasksByDateView()
     {
-        Console.WriteLine("Enter start date (yyyy-MM-dd [HH:mm[:ss]]): ");
+        Console.WriteLine("Enter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
         var date = ParseDate(Console.ReadLine(), formats);
         if (date == null)
         {
-            Console.WriteLine("Could not parse given date to correct format (yyyy-MM-dd [HH:mm[:ss]])");
+            Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
             return;
         }
         var tasks = taskService.GetTaskByDate(date.Value);
@@ -140,8 +151,9 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
     }
     private static DateTime? ParseDate(string date, string[] formats)
     {
+
         var wasParseSuccesfull = DateTime.TryParseExact(
-            date,
+            date.Trim(), //Trim is used to ensure no leading or trailing spaces could prevent parsing
             formats,
             CultureInfo.InvariantCulture,
             DateTimeStyles.None,
