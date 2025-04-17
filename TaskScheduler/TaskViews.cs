@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ConsoleTables;
 
 namespace TaskManager;
 
@@ -142,12 +143,19 @@ public class TaskViews(TaskService taskService, MenuActionService menuActionServ
 
     private static void PrintTasks(List<Task> tasks)
     {
-        foreach (var task in tasks)
+        var table = new ConsoleTable("Name", "Description", "Start Date", "EndDate", "Duration");
+        foreach(var task in tasks)
         {
-            Console.WriteLine($"{task.Name} {task.Description}" +
-                $" - Start: {task.StartDate} End: {task.EndDate}" +
-                $" Duration: {task.EndDate - task.StartDate}");
+            var duration = task.EndDate - task.StartDate;
+            table.AddRow(
+                task.Name,
+                task.Description,
+                task.StartDate.ToString(),
+                task.EndDate.ToString(),
+                $"{(int)duration.TotalHours}h {duration.Minutes}m"
+                );
         }
+        table.Write();
     }
     private static DateTime? ParseDate(string date, string[] formats)
     {
