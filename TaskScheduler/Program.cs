@@ -5,6 +5,7 @@ internal class Program
     static void Main(string[] args)
     {
         var taskService = new TaskService();
+        //seed initial data
         var task1 = new Task(
             "Work meeting",
             "",
