@@ -3,14 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Domain.Helpers;
 
-namespace TaskManager;
-
-public enum MenuTypes
-{
-    MainMenu,
-    TaskMenu
-}
+namespace TaskManager.App.Helpers;
 
 public static class Extensions
 {
@@ -24,7 +19,7 @@ public static class Extensions
         return date >= start && date <= end;
     }
 
-    public static void PrintMenu(MenuActionService menuActionService, MenuTypes menuName)
+    public static void PrintMenu(MenuActionService menuActionService, MenuType menuName)
     {
         foreach (var menuAction in menuActionService.GetMenuActionsByMenuName(menuName))
         {
@@ -33,13 +28,4 @@ public static class Extensions
     }
 }
 
-public class InvalidDateRangeException : Exception
-{
-    public InvalidDateRangeException() { }
 
-    public InvalidDateRangeException(string message)
-        : base(message) { }
-
-    public InvalidDateRangeException(string message, Exception inner)
-        : base(message, inner) { }
-}

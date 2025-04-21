@@ -5,30 +5,31 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.App.Helpers;
 
 namespace TaskManager;
 
-public class TaskService
+public class CalendarEventService
 {
-    private List<Task> tasks = new List<Task>();
+    private List<CalendarEvent> tasks = new List<CalendarEvent>();
 
-    public bool Add(Task task)
+    public bool Add(CalendarEvent task)
     {
         tasks.Add(task); return true;
     }
 
-    public List<Task> GetAllTasks()
+    public List<CalendarEvent> GetAllTasks()
     {
         return tasks;
     }
 
-    public bool Remove(Guid id)
+    public bool Remove(int id)
     {
         var itemsRemoved = tasks.RemoveAll(task => task.Id == id);
         return itemsRemoved > 0;
     }
 
-    public List<Task> GetTasksByDateRange(DateTime startTime, DateTime endtime)
+    public List<CalendarEvent> GetTasksByDateRange(DateTime startTime, DateTime endtime)
     {
         return tasks.Where(t =>
             t.StartDate.Between(startTime, endtime) ||
@@ -36,16 +37,21 @@ public class TaskService
         ).ToList();
     }
 
-    public List<Task> GetTasksByYear(int year)
+    public List<CalendarEvent> GetTasksByYear(int year)
     {
-        return tasks.Where(t => t.StartDate.Year == year || t.EndDate.Year == year).ToList();
+        return tasks.Where(t => t.StartDate.Year <= year && t.EndDate.Year >= year).ToList();
     }
 
-    public List<Task> GetTaskByDate(DateTime date)
+    public List<CalendarEvent> GetTaskByDate(DateTime date)
     {
         return tasks.Where(t =>
             t.StartDate.Date ==  date.Date ||
             t.EndDate.Date == date.Date
         ).ToList();
+    }
+
+    public int GetLastId()
+    {
+        return tasks.Count == 0 ? 0 : tasks.Max(t => t.Id);
     }
 }

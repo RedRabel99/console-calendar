@@ -4,16 +4,16 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        var taskService = new TaskService();
+        var taskService = new CalendarEventService();
         //seed initial data
-        var task1 = new Task(
+        var task1 = new CalendarEvent(1,
             "Work meeting",
             "",
             new DateTime(2025, 4, 1, 15, 0, 0),
             new DateTime(2025, 4, 1, 15, 30, 0)
         );
 
-        var task2 = new Task(
+        var task2 = new CalendarEvent(2,
             "Holidays",
             "Holidays with parents",
             new DateTime(2025, 6, 25),
@@ -23,7 +23,7 @@ internal class Program
         taskService.Add(task1);
         taskService.Add(task2);
 
-        var app = new App(taskService);
+        var app = new AppManager(taskService);
         
         app.Run();
     }

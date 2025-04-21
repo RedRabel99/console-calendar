@@ -1,16 +1,19 @@
-﻿using System;
+﻿using ConsoleTables;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ConsoleTables;
+using TaskManager.App.Abstract;
+using TaskManager.App.Helpers;
+using TaskManager.Domain.Helpers;
 
-namespace TaskManager;
+namespace TaskManager.App.Managers;
 
-public class TaskViews
+public class CalendarEventManager
 {
-    private TaskService taskService;
+    private CalendarEventService taskService;
     private MenuActionService menuActionService;
     private readonly string[] formats = {
         "dd-MM-yyyy HH:mm:ss",
@@ -18,7 +21,7 @@ public class TaskViews
         "dd-MM-yyyy"
     };
 
-    public TaskViews(TaskService taskService)
+    public CalendarEventManager(CalendarEventService taskService)
     {
         this.taskService = taskService;
         menuActionService = new MenuActionService();
@@ -56,15 +59,15 @@ public class TaskViews
             Console.WriteLine("Your task has not been added");
             return;
         }
-
-        var task = new Task(name, description, startDate.Value, endDate.Value);
+        var id = taskService.GetLastId() + 1;
+        var task = new CalendarEvent(id, name, description, startDate.Value, endDate.Value);
         taskService.Add(task);
     }
 
     public void GetTasksView()
     {
         Console.WriteLine("What tasks do you want to view");
-        Extensions.PrintMenu(menuActionService, MenuTypes.TaskMenu);
+        Extensions.PrintMenu(menuActionService, MenuType.TaskMenu);
 
         var key = Console.ReadKey().KeyChar;
         Console.WriteLine();
@@ -148,7 +151,7 @@ public class TaskViews
         PrintTasks(tasks);
     }
 
-    private static void PrintTasks(List<Task> tasks)
+    private static void PrintTasks(List<CalendarEvent> tasks)
     {
         var table = new ConsoleTable("Name", "Description", "Start Date", "EndDate", "Duration");
         foreach (var task in tasks)
@@ -180,10 +183,10 @@ public class TaskViews
 
     private void InitializeTaskViewsActionService()
     {
-        menuActionService.AddNewAction(1, "Show all tasks", MenuTypes.TaskMenu);
-        menuActionService.AddNewAction(2, "Show tasks by given year", MenuTypes.TaskMenu);
-        menuActionService.AddNewAction(3, "Show tasks between given date range", MenuTypes.TaskMenu);
-        menuActionService.AddNewAction(4, "Show tasks on given day", MenuTypes.TaskMenu);
-        menuActionService.AddNewAction(5, "Cancel", MenuTypes.TaskMenu);
+        menuActionService.AddNewAction(1, "Show all tasks", MenuType.TaskMenu);
+        menuActionService.AddNewAction(2, "Show tasks by given year", MenuType.TaskMenu);
+        menuActionService.AddNewAction(3, "Show tasks between given date range", MenuType.TaskMenu);
+        menuActionService.AddNewAction(4, "Show tasks on given day", MenuType.TaskMenu);
+        menuActionService.AddNewAction(5, "Cancel", MenuType.TaskMenu);
     }
 }

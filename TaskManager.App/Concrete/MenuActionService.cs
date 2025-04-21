@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.Domain.Helpers;
 
 namespace TaskManager;
 
@@ -14,13 +15,13 @@ public class MenuActionService
         menuActions = new List<MenuAction>();
     }
 
-    public void AddNewAction(int i, string name, MenuTypes menuName)
+    public void AddNewAction(int i, string name, MenuType menuName)
     {
         var menuAction = new MenuAction(i, name, menuName);
         menuActions.Add(menuAction);
     }
 
-    public List<MenuAction> GetMenuActionsByMenuName(MenuTypes menuName)
+    public List<MenuAction> GetMenuActionsByMenuName(MenuType menuName)
     {
         return menuActions.Where(m => m.MenuName == menuName).ToList();
     }
