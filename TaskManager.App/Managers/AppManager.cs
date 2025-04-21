@@ -3,13 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using TaskManager.App.Abstract;
-using TaskManager.App.Helpers;
-using TaskManager.App.Managers;
-using TaskManager.Domain.Helpers;
+using ConsoleCalendar.App.Abstract;
+using ConsoleCalendar.App.Helpers;
+using ConsoleCalendar.App.Managers;
+using ConsoleCalendar.Domain.Helpers;
 
-namespace TaskManager;
+namespace ConsoleCalendar;
 
 public class AppManager
 {
@@ -24,8 +23,8 @@ public class AppManager
     }
     public void Run()
     {
-        var taskViews = new CalendarEventManager(calendarEventService);
-        Console.WriteLine("Welcome to Task Manager\n");
+        var calendarEventManager = new CalendarEventManager(calendarEventService);
+        Console.WriteLine("Welcome to Console Calendar app\n");
 
         while (true)
         {
@@ -41,10 +40,10 @@ public class AppManager
             switch (operation.KeyChar)
             {
                 case '1':
-                    taskViews.AddTaskView();
+                    calendarEventManager.AddCalendarEventView();
                     break;
                 case '2':
-                    taskViews.GetTasksView();
+                    calendarEventManager.GetCalendarEventsView();
                     break;
                 case '3':
                     return;

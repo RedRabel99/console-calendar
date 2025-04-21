@@ -5,12 +5,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using TaskManager.App.Abstract;
-using TaskManager.App.Helpers;
-using TaskManager.Domain.Helpers;
+using ConsoleCalendar.App.Abstract;
+using ConsoleCalendar.App.Helpers;
+using ConsoleCalendar.Domain.Helpers;
 
-namespace TaskManager.App.Managers;
+namespace ConsoleCalendar.App.Managers;
 
 public class CalendarEventManager
 {
@@ -29,12 +28,12 @@ public class CalendarEventManager
         InitializeTaskViewsActionService();
     }
 
-    public void AddTaskView()
+    public void AddCalendarEventView()
     {
-        Console.WriteLine("Enter task name:");
+        Console.WriteLine("Enter calendar event name:");
         var name = Console.ReadLine();
 
-        Console.WriteLine("\nEnter task description;");
+        Console.WriteLine("\nEnter calendar event description;");
         var description = Console.ReadLine();
 
 
@@ -46,7 +45,7 @@ public class CalendarEventManager
         if (startDate is null)
         {
             Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
-            Console.WriteLine("Your task has not been added");
+            Console.WriteLine("Your calendar event has not been added");
             return;
         }
 
@@ -57,17 +56,17 @@ public class CalendarEventManager
         if (endDate is null)
         {
             Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
-            Console.WriteLine("Your task has not been added");
+            Console.WriteLine("Your calendar event has not been added");
             return;
         }
         var id = calendarEventService.GetLastId() + 1;
-        var task = new CalendarEvent(id, name, description, startDate.Value, endDate.Value);
-        calendarEventService.Add(task);
+        var calendarEvent = new CalendarEvent(id, name, description, startDate.Value, endDate.Value);
+        calendarEventService.Add(calendarEvent);
     }
 
-    public void GetTasksView()
+    public void GetCalendarEventsView()
     {
-        Console.WriteLine("What tasks do you want to view");
+        Console.WriteLine("What calendar events do you want to view");
         Extensions.PrintMenu(menuActionService, MenuType.TaskMenu);
 
         var key = Console.ReadKey().KeyChar;
@@ -76,16 +75,16 @@ public class CalendarEventManager
         switch (key)
         {
             case '1':
-                ShowAllTasksView();
+                ShowAllCalendarEventsView();
                 break;
             case '2':
-                ShowTasksByYearView();
+                ShowCalendarEventsByYearView();
                 break;
             case '3':
-                ShowTasksByRangeView();
+                ShowCalendarEventsByRangeView();
                 break;
             case '4':
-                ShowTasksByDateView();
+                ShowCalendarEventsByDateView();
                 break;
             case '5':
                 return;
@@ -95,13 +94,13 @@ public class CalendarEventManager
         }
 
     }
-    private void ShowAllTasksView()
+    private void ShowAllCalendarEventsView()
     {
-        var tasks = calendarEventService.GetAllTasks();
-        PrintTasks(tasks);
+        var calendarEvents = calendarEventService.GetAllCalendarEvents();
+        PrintCalendarEvents(calendarEvents);
     }
 
-    private void ShowTasksByYearView()
+    private void ShowCalendarEventsByYearView()
     {
         Console.WriteLine("Enter a year:");
         if (!int.TryParse(Console.ReadLine(), out var year))
@@ -110,11 +109,11 @@ public class CalendarEventManager
             return;
         }
         Console.WriteLine();
-        var tasks = calendarEventService.GetTasksByYear(year);
-        PrintTasks(tasks);
+        var calendarEvent = calendarEventService.GetCalendarEventsByYear(year);
+        PrintCalendarEvents(calendarEvent);
     }
 
-    private void ShowTasksByRangeView()
+    private void ShowCalendarEventsByRangeView()
     {
         Console.WriteLine("Enter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
         var startDate = ParseDate(Console.ReadLine(), formats);
@@ -135,11 +134,11 @@ public class CalendarEventManager
             Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
         }
 
-        var tasks = calendarEventService.GetTasksByDateRange(startDate.Value, endDate.Value);
-        PrintTasks(tasks);
+        var calendarEvent = calendarEventService.GetCalendarEventsByDateRange(startDate.Value, endDate.Value);
+        PrintCalendarEvents(calendarEvent);
     }
 
-    private void ShowTasksByDateView()
+    private void ShowCalendarEventsByDateView()
     {
         Console.WriteLine("Enter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
         var date = ParseDate(Console.ReadLine(), formats);
@@ -148,21 +147,22 @@ public class CalendarEventManager
             Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
             return;
         }
-        var tasks = calendarEventService.GetTaskByDate(date.Value);
-        PrintTasks(tasks);
+        var calendarEvent = calendarEventService.GetCalendarEventsByDate(date.Value);
+        PrintCalendarEvents(calendarEvent);
     }
 
-    private static void PrintTasks(List<CalendarEvent> tasks)
+    private static void PrintCalendarEvents(List<CalendarEvent> calendarEvents)
     {
-        var table = new ConsoleTable("Name", "Description", "Start Date", "EndDate", "Duration");
-        foreach (var task in tasks)
+        var table = new ConsoleTable("Id","Name", "Description", "Start Date", "EndDate", "Duration");
+        foreach (var calendarEvent in calendarEvents)
         {
-            var duration = task.EndDate - task.StartDate;
+            var duration = calendarEvent.EndDate - calendarEvent.StartDate;
             table.AddRow(
-                task.Name,
-                task.Description,
-                task.StartDate.ToString(),
-                task.EndDate.ToString(),
+                calendarEvent.Id,
+                calendarEvent.Name,
+                calendarEvent.Description,
+                calendarEvent.StartDate.ToString(),
+                calendarEvent.EndDate.ToString(),
                 $"{(int)duration.TotalHours}h {duration.Minutes}m"
                 );
         }
@@ -184,10 +184,10 @@ public class CalendarEventManager
 
     private void InitializeTaskViewsActionService()
     {
-        menuActionService.AddNewAction(1, "Show all tasks", MenuType.TaskMenu);
-        menuActionService.AddNewAction(2, "Show tasks by given year", MenuType.TaskMenu);
-        menuActionService.AddNewAction(3, "Show tasks between given date range", MenuType.TaskMenu);
-        menuActionService.AddNewAction(4, "Show tasks on given day", MenuType.TaskMenu);
+        menuActionService.AddNewAction(1, "Show all calendar events", MenuType.TaskMenu);
+        menuActionService.AddNewAction(2, "Show calendar events by given year", MenuType.TaskMenu);
+        menuActionService.AddNewAction(3, "Show calendar events between given date range", MenuType.TaskMenu);
+        menuActionService.AddNewAction(4, "Show calendar events on given day", MenuType.TaskMenu);
         menuActionService.AddNewAction(5, "Cancel", MenuType.TaskMenu);
     }
 }

@@ -4,11 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using TaskManager.App.Abstract;
-using TaskManager.App.Helpers;
+using ConsoleCalendar.App.Abstract;
+using ConsoleCalendar.App.Helpers;
 
-namespace TaskManager;
+namespace ConsoleCalendar;
 
 public class CalendarEventService : ICalendarEventService
 {
@@ -19,7 +18,7 @@ public class CalendarEventService : ICalendarEventService
         calendarEvents.Add(calendarEvent); return true;
     }
 
-    public List<CalendarEvent> GetAllTasks()
+    public List<CalendarEvent> GetAllCalendarEvents()
     {
         return calendarEvents;
     }
@@ -38,7 +37,7 @@ public class CalendarEventService : ICalendarEventService
         return true;
     }
 
-    public List<CalendarEvent> GetTasksByDateRange(DateTime startTime, DateTime endtime)
+    public List<CalendarEvent> GetCalendarEventsByDateRange(DateTime startTime, DateTime endtime)
     {
         return calendarEvents.Where(t =>
             t.StartDate.Between(startTime, endtime) ||
@@ -46,12 +45,12 @@ public class CalendarEventService : ICalendarEventService
         ).ToList();
     }
 
-    public List<CalendarEvent> GetTasksByYear(int year)
+    public List<CalendarEvent> GetCalendarEventsByYear(int year)
     {
         return calendarEvents.Where(t => t.StartDate.Year <= year && t.EndDate.Year >= year).ToList();
     }
 
-    public List<CalendarEvent> GetTaskByDate(DateTime date)
+    public List<CalendarEvent> GetCalendarEventsByDate(DateTime date)
     {
         return calendarEvents.Where(t =>
             t.StartDate.Date ==  date.Date ||

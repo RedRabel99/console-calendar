@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using TaskManager.Domain.Common;
-using TaskManager.Domain.Helpers;
+using ConsoleCalendar.Domain.Common;
+using ConsoleCalendar.Domain.Helpers;
 
-namespace TaskManager;
+namespace ConsoleCalendar;
 
 public class CalendarEvent : BaseEnitity
 {

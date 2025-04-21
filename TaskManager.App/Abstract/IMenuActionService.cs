@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using TaskManager;
-using TaskManager.Domain.Helpers;
+using ConsoleCalendar;
+using ConsoleCalendar.Domain.Helpers;
 
 namespace ConsoleCalendar.App.Abstract
 {

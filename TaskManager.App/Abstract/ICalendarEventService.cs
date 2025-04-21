@@ -2,19 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace TaskManager.App.Abstract
+namespace ConsoleCalendar.App.Abstract
 {
     public interface ICalendarEventService
     {
         public bool Add(CalendarEvent calendarEvent);
         public bool Remove(int id);
         public bool Update(int id, CalendarEvent calendarEvent);
-        List<CalendarEvent> GetAllTasks();
+        List<CalendarEvent> GetAllCalendarEvents();
         int GetLastId();
-        List<CalendarEvent> GetTasksByDateRange(DateTime startTime, DateTime endtime);
-        List<CalendarEvent> GetTasksByYear(int year);
-        List<CalendarEvent> GetTaskByDate(DateTime date);
+        List<CalendarEvent> GetCalendarEventsByDateRange(DateTime startTime, DateTime endtime);
+        List<CalendarEvent> GetCalendarEventsByYear(int year);
+        List<CalendarEvent> GetCalendarEventsByDate(DateTime date);
     }
 }
