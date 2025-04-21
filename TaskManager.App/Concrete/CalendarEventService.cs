@@ -5,33 +5,42 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.App.Abstract;
 using TaskManager.App.Helpers;
 
 namespace TaskManager;
 
-public class CalendarEventService
+public class CalendarEventService : ICalendarEventService
 {
-    private List<CalendarEvent> tasks = new List<CalendarEvent>();
+    private List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
 
-    public bool Add(CalendarEvent task)
+    public bool Add(CalendarEvent calendarEvent)
     {
-        tasks.Add(task); return true;
+        calendarEvents.Add(calendarEvent); return true;
     }
 
     public List<CalendarEvent> GetAllTasks()
     {
-        return tasks;
+        return calendarEvents;
     }
 
     public bool Remove(int id)
     {
-        var itemsRemoved = tasks.RemoveAll(task => task.Id == id);
+        var itemsRemoved = calendarEvents.RemoveAll(ce => ce.Id == id);
         return itemsRemoved > 0;
+    }
+
+    public bool Update(int id, CalendarEvent calendarEvent)
+    {
+        var index = calendarEvents.FindIndex(t => t.Id == id);
+        if (index == -1) return false;
+        calendarEvents[index] = calendarEvent;
+        return true;
     }
 
     public List<CalendarEvent> GetTasksByDateRange(DateTime startTime, DateTime endtime)
     {
-        return tasks.Where(t =>
+        return calendarEvents.Where(t =>
             t.StartDate.Between(startTime, endtime) ||
             t.EndDate.Between(startTime, endtime)
         ).ToList();
@@ -39,12 +48,12 @@ public class CalendarEventService
 
     public List<CalendarEvent> GetTasksByYear(int year)
     {
-        return tasks.Where(t => t.StartDate.Year <= year && t.EndDate.Year >= year).ToList();
+        return calendarEvents.Where(t => t.StartDate.Year <= year && t.EndDate.Year >= year).ToList();
     }
 
     public List<CalendarEvent> GetTaskByDate(DateTime date)
     {
-        return tasks.Where(t =>
+        return calendarEvents.Where(t =>
             t.StartDate.Date ==  date.Date ||
             t.EndDate.Date == date.Date
         ).ToList();
@@ -52,6 +61,6 @@ public class CalendarEventService
 
     public int GetLastId()
     {
-        return tasks.Count == 0 ? 0 : tasks.Max(t => t.Id);
+        return calendarEvents.Count == 0 ? 0 : calendarEvents.Max(t => t.Id);
     }
 }

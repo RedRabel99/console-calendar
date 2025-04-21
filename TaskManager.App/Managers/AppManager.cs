@@ -1,8 +1,10 @@
-﻿using System;
+﻿using ConsoleCalendar.App.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TaskManager.App.Abstract;
 using TaskManager.App.Helpers;
 using TaskManager.App.Managers;
 using TaskManager.Domain.Helpers;
@@ -11,18 +13,18 @@ namespace TaskManager;
 
 public class AppManager
 {
-    private readonly CalendarEventService taskService;
-    private readonly MenuActionService menuActionService;
+    private readonly ICalendarEventService calendarEventService;
+    private readonly IMenuActionService menuActionService;
 
-    public AppManager(CalendarEventService taskService)
+    public AppManager(ICalendarEventService calendarEventService)
     {
-        this.taskService = taskService;
+        this.calendarEventService = calendarEventService;
         this.menuActionService = new MenuActionService();
         InitializeMainMenuActionService();
     }
     public void Run()
     {
-        var taskViews = new CalendarEventManager(taskService);
+        var taskViews = new CalendarEventManager(calendarEventService);
         Console.WriteLine("Welcome to Task Manager\n");
 
         while (true)

@@ -1,4 +1,5 @@
-﻿using ConsoleTables;
+﻿using ConsoleCalendar.App.Abstract;
+using ConsoleTables;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -13,17 +14,17 @@ namespace TaskManager.App.Managers;
 
 public class CalendarEventManager
 {
-    private CalendarEventService taskService;
-    private MenuActionService menuActionService;
+    private ICalendarEventService calendarEventService;
+    private IMenuActionService menuActionService;
     private readonly string[] formats = {
         "dd-MM-yyyy HH:mm:ss",
         "dd-MM-yyyy HH:mm",
         "dd-MM-yyyy"
     };
 
-    public CalendarEventManager(CalendarEventService taskService)
+    public CalendarEventManager(ICalendarEventService calendarEventService)
     {
-        this.taskService = taskService;
+        this.calendarEventService = calendarEventService;
         menuActionService = new MenuActionService();
         InitializeTaskViewsActionService();
     }
@@ -59,9 +60,9 @@ public class CalendarEventManager
             Console.WriteLine("Your task has not been added");
             return;
         }
-        var id = taskService.GetLastId() + 1;
+        var id = calendarEventService.GetLastId() + 1;
         var task = new CalendarEvent(id, name, description, startDate.Value, endDate.Value);
-        taskService.Add(task);
+        calendarEventService.Add(task);
     }
 
     public void GetTasksView()
@@ -96,7 +97,7 @@ public class CalendarEventManager
     }
     private void ShowAllTasksView()
     {
-        var tasks = taskService.GetAllTasks();
+        var tasks = calendarEventService.GetAllTasks();
         PrintTasks(tasks);
     }
 
@@ -109,7 +110,7 @@ public class CalendarEventManager
             return;
         }
         Console.WriteLine();
-        var tasks = taskService.GetTasksByYear(year);
+        var tasks = calendarEventService.GetTasksByYear(year);
         PrintTasks(tasks);
     }
 
@@ -134,7 +135,7 @@ public class CalendarEventManager
             Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
         }
 
-        var tasks = taskService.GetTasksByDateRange(startDate.Value, endDate.Value);
+        var tasks = calendarEventService.GetTasksByDateRange(startDate.Value, endDate.Value);
         PrintTasks(tasks);
     }
 
@@ -147,7 +148,7 @@ public class CalendarEventManager
             Console.WriteLine("Could not parse given date to correct format (dd-MM-yyyy [HH:mm[:ss]])");
             return;
         }
-        var tasks = taskService.GetTaskByDate(date.Value);
+        var tasks = calendarEventService.GetTaskByDate(date.Value);
         PrintTasks(tasks);
     }
 

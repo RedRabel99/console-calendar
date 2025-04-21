@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleCalendar.App.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +20,7 @@ public static class Extensions
         return date >= start && date <= end;
     }
 
-    public static void PrintMenu(MenuActionService menuActionService, MenuType menuName)
+    public static void PrintMenu(IMenuActionService menuActionService, MenuType menuName)
     {
         foreach (var menuAction in menuActionService.GetMenuActionsByMenuName(menuName))
         {

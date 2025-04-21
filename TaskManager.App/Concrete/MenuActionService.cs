@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ConsoleCalendar.App.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using TaskManager.Domain.Helpers;
 
 namespace TaskManager;
 
-public class MenuActionService
+public class MenuActionService : IMenuActionService
 {
     private List<MenuAction> menuActions { get; set; }
     public MenuActionService()
@@ -15,9 +16,9 @@ public class MenuActionService
         menuActions = new List<MenuAction>();
     }
 
-    public void AddNewAction(int i, string name, MenuType menuName)
+    public void AddNewAction(int id, string name, MenuType menuName)
     {
-        var menuAction = new MenuAction(i, name, menuName);
+        var menuAction = new MenuAction(id, name, menuName);
         menuActions.Add(menuAction);
     }
 

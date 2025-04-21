@@ -1,10 +1,12 @@
-﻿namespace TaskManager;
+﻿using TaskManager.App.Abstract;
+
+namespace TaskManager;
 
 internal class Program
 {
     static void Main(string[] args)
     {
-        var taskService = new CalendarEventService();
+        ICalendarEventService taskService = new CalendarEventService();
         //seed initial data
         var task1 = new CalendarEvent(1,
             "Work meeting",
