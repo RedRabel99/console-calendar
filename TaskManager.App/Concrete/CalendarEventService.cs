@@ -1,0 +1,64 @@
+﻿using ConsoleCalendar.App.Abstract;
+using ConsoleCalendar.App.Helpers;
+
+namespace ConsoleCalendar;
+
+public class CalendarEventService : ICalendarEventService
+{
+    private List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
+
+    public CalendarEvent? Get(int id)
+    {
+        return calendarEvents.FirstOrDefault(e => e.Id == id);
+    }
+
+    public bool Add(CalendarEvent calendarEvent)
+    {
+        calendarEvents.Add(calendarEvent); return true;
+    }
+
+    public List<CalendarEvent> GetAllCalendarEvents()
+    {
+        return calendarEvents;
+    }
+
+    public bool Remove(int id)
+    {
+        var itemsRemoved = calendarEvents.RemoveAll(ce => ce.Id == id);
+        return itemsRemoved > 0;
+    }
+
+    public bool Update(int id, CalendarEvent calendarEvent)
+    {
+        var index = calendarEvents.FindIndex(t => t.Id == id);
+        if (index == -1) return false;
+        calendarEvents[index] = calendarEvent;
+        return true;
+    }
+
+    public List<CalendarEvent> GetCalendarEventsByDateRange(DateTime startTime, DateTime endtime)
+    {
+        return calendarEvents.Where(t =>
+            t.StartDate.Between(startTime, endtime) ||
+            t.EndDate.Between(startTime, endtime)
+        ).ToList();
+    }
+
+    public List<CalendarEvent> GetCalendarEventsByYear(int year)
+    {
+        return calendarEvents.Where(t => t.StartDate.Year <= year && t.EndDate.Year >= year).ToList();
+    }
+
+    public List<CalendarEvent> GetCalendarEventsByDate(DateTime date)
+    {
+        return calendarEvents.Where(t =>
+            t.StartDate.Date ==  date.Date ||
+            t.EndDate.Date == date.Date
+        ).ToList();
+    }
+
+    public int GetLastId()
+    {
+        return calendarEvents.Count == 0 ? 0 : calendarEvents.Max(t => t.Id);
+    }
+}
