@@ -1,11 +1,6 @@
 ﻿using ConsoleCalendar.App.Abstract;
 using ConsoleTables;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using ConsoleCalendar.App.Abstract;
 using ConsoleCalendar.App.Helpers;
 using ConsoleCalendar.Domain.Helpers;
 
@@ -94,6 +89,87 @@ public class CalendarEventManager
         }
 
     }
+
+    public void RemoveCalendarEventView()
+    {
+        Console.WriteLine("Please enter the id of calendar event you want to remove:");
+        if(!int.TryParse(Console.ReadLine(), out var id))
+        {   
+            Console.WriteLine("\nGiven value is not the correct id");
+            return;
+        }
+
+        var wasRemovedSuccesfuly = calendarEventService.Remove(id);
+
+        Console.WriteLine(
+            wasRemovedSuccesfuly
+                ? $"\nEvent of id {id} was removed successfully."
+                : $"\nCould not remove event of id {id}."
+            );
+
+    }
+
+    public void EditCalendarEventView()
+    {
+        Console.WriteLine("Please enter id of calendar event you want to edit");
+        if(!int.TryParse (Console.ReadLine(), out var id))
+        {
+            Console.WriteLine("\nGiven value is not the correct id");
+            return;
+        }
+        var calendarEvent = calendarEventService.Get(id);
+        if (calendarEvent == null)
+        {
+            Console.WriteLine("\nCould not find calendarEvent of given id");
+            return;
+        }
+
+        Console.WriteLine($"\nCurrent name: {calendarEvent.Name}");
+        Console.Write("Enter new name (or press Enter to keep): ");
+        var name = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(name))
+            calendarEvent.Name = name;
+
+        Console.WriteLine($"\nCurrent description: {calendarEvent.Description}");
+        Console.Write("Enter new description (or press Enter to keep): ");
+        var description = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(description))
+            calendarEvent.Description = description;
+
+        Console.WriteLine($"\nCurrent start date: {calendarEvent.StartDate}");
+        Console.Write("Enter new start date (dd-MM-yyyy [HH:mm[:ss]] or press Enter to keep): ");
+        var startDateInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(startDateInput))
+        {
+            var parsedStart = ParseDate(startDateInput, formats);
+            if (parsedStart == null)
+            {
+                Console.WriteLine("Invalid start date format. Aborting edit.");
+                return;
+            }
+            calendarEvent.StartDate = parsedStart.Value;
+        }
+
+        Console.WriteLine($"\nCurrent end date: {calendarEvent.EndDate}");
+        Console.Write("Enter new end date (dd-MM-yyyy [HH:mm[:ss]] or press Enter to keep): ");
+        var endDateInput = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(endDateInput))
+        {
+            var parsedEnd = ParseDate(endDateInput, formats);
+            if (parsedEnd == null)
+            {
+                Console.WriteLine("Invalid end date format. Aborting edit.");
+                return;
+            }
+            calendarEvent.EndDate = parsedEnd.Value;
+        }
+
+        var wasUpdated = calendarEventService.Update(id, calendarEvent);
+        Console.WriteLine(wasUpdated
+            ? $"\nCalendar event with id {id} was updated successfully."
+            : $"\nCould not update calendar event with id {id}.");
+    }
+
     private void ShowAllCalendarEventsView()
     {
         var calendarEvents = calendarEventService.GetAllCalendarEvents();

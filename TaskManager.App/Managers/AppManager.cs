@@ -1,10 +1,4 @@
 ﻿using ConsoleCalendar.App.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ConsoleCalendar.App.Abstract;
-using ConsoleCalendar.App.Helpers;
 using ConsoleCalendar.App.Managers;
 using ConsoleCalendar.Domain.Helpers;
 
@@ -46,6 +40,12 @@ public class AppManager
                     calendarEventManager.GetCalendarEventsView();
                     break;
                 case '3':
+                    calendarEventManager.EditCalendarEventView();
+                    break;
+                case '4':
+                    calendarEventManager.RemoveCalendarEventView();
+                    break;
+                case '5':
                     return;
                 default:
                     Console.WriteLine("Entered action does not exist");
@@ -56,8 +56,10 @@ public class AppManager
 
     private void InitializeMainMenuActionService()
     {
-        menuActionService.AddNewAction(1, "Add Task", MenuType.MainMenu);
-        menuActionService.AddNewAction(2, "Show Task", MenuType.MainMenu);
-        menuActionService.AddNewAction(3, "Exit", MenuType.MainMenu);
+        menuActionService.AddNewAction(1, "Add calendar event", MenuType.MainMenu);
+        menuActionService.AddNewAction(2, "Show calendar event", MenuType.MainMenu);
+        menuActionService.AddNewAction(3, "Edit calendar event", MenuType.MainMenu);
+        menuActionService.AddNewAction(4, "Remove calendar event", MenuType.MainMenu);
+        menuActionService.AddNewAction(5, "Exit", MenuType.MainMenu);
     }
 }

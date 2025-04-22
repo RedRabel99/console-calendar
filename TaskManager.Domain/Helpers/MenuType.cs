@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace ConsoleCalendar.Domain.Helpers;
+﻿namespace ConsoleCalendar.Domain.Helpers;
 
 public enum MenuType
 {

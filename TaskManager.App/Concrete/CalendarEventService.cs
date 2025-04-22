@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using ConsoleCalendar.App.Abstract;
+﻿using ConsoleCalendar.App.Abstract;
 using ConsoleCalendar.App.Helpers;
 
 namespace ConsoleCalendar;
@@ -12,6 +6,11 @@ namespace ConsoleCalendar;
 public class CalendarEventService : ICalendarEventService
 {
     private List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
+
+    public CalendarEvent? Get(int id)
+    {
+        return calendarEvents.FirstOrDefault(e => e.Id == id);
+    }
 
     public bool Add(CalendarEvent calendarEvent)
     {
