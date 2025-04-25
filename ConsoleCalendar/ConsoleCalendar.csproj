@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskManager.App\ConsoleCalendar.App.csproj" />
+    <ProjectReference Include="..\ConsoleCalendar.App\ConsoleCalendar.App.csproj" />
   </ItemGroup>
 
 </Project>

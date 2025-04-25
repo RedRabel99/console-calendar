@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TaskManager.App\ConsoleCalendar.App.csproj" />
-    <ProjectReference Include="..\TaskManager.Domain\ConsoleCalendar.Domain.csproj" />
+    <ProjectReference Include="..\ConsoleCalendar.App\ConsoleCalendar.App.csproj" />
+    <ProjectReference Include="..\ConsoleCalendar.Domain\ConsoleCalendar.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
