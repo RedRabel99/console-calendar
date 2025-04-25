@@ -1,5 +1,6 @@
 ﻿using ConsoleCalendar.App.Abstract;
 using ConsoleCalendar.Domain.Helpers;
+using Newtonsoft.Json;
 
 namespace ConsoleCalendar.App.Helpers;
 
@@ -21,6 +22,12 @@ public static class Extensions
         {
             Console.WriteLine($"{menuAction.Id}. {menuAction.Name}");
         }
+    }
+
+    public static string Truncate(this string text, int maxLength)
+    {
+        if (string.IsNullOrEmpty(text)) return "";
+        return text.Length <= maxLength ? text : text.Substring(0, maxLength - 3) + "...";
     }
 }
 
