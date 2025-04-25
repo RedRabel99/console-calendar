@@ -1,32 +1,47 @@
 ﻿using ConsoleCalendar.App.Abstract;
 using Newtonsoft.Json;
 
-namespace ConsoleCalendar.App.Concrete
+namespace ConsoleCalendar.App.Concrete;
+
+public class CalendarEventJsonStorageService : IStorageService<CalendarEvent>
 {
-    public class CalendarEventJsonStorageService : IStorageService<CalendarEvent>
+    private readonly string filePath;
+
+    public CalendarEventJsonStorageService(string filePath)
     {
-        private readonly string filePath;
+        this.filePath = filePath;
+    }
 
-        public CalendarEventJsonStorageService(string filePath)
+    public List<CalendarEvent> Load()
+    {
+        if (!File.Exists(filePath))
         {
-            this.filePath = filePath;
+            return new List<CalendarEvent>();
         }
 
-        public List<CalendarEvent> Load()
-        {
-            if (!File.Exists(filePath))
-                return new List<CalendarEvent>();
+        using var reader = new StreamReader(filePath);
+        var json = reader.ReadToEnd();
+        return JsonConvert.DeserializeObject<List<CalendarEvent>>(json) ?? new List<CalendarEvent>();
+    }
 
-            using var reader = new StreamReader(filePath);
-            var json = reader.ReadToEnd();
-            return JsonConvert.DeserializeObject<List<CalendarEvent>>(json) ?? new List<CalendarEvent>();
+    public void Save(List<CalendarEvent> data)
+    {
+        if (!File.Exists(filePath))
+        {
+            CreateDirectoryIfDoesNotExist(filePath);
         }
 
-        public void Save(List<CalendarEvent> data)
+        using var writer = new StreamWriter(filePath);
+        var json = JsonConvert.SerializeObject(data, Formatting.Indented);
+        writer.Write(json);
+    }
+
+    private void CreateDirectoryIfDoesNotExist(string path)
+    {
+        var directory = Path.GetDirectoryName(path);
+        if (!string.IsNullOrEmpty(directory))
         {
-            using var writer = new StreamWriter(filePath);
-            var json = JsonConvert.SerializeObject(data, Formatting.Indented);
-            writer.Write(json);
+            Directory.CreateDirectory(directory);
         }
     }
 }
