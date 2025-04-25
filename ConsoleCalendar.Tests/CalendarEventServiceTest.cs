@@ -1,5 +1,6 @@
 using ConsoleCalendar.App.Abstract;
 using FluentAssertions;
+using Moq;
 
 namespace ConsoleCalendar.Tests;
 
@@ -153,7 +154,9 @@ public class CalendarEventServiceTest
     public void GetLastIdShouldReturnZeroWhenNoEventsExist()
     {
         // Arrange
-        var service = new CalendarEventService();
+        var mockStorage = new Mock<IStorageService<CalendarEvent>>();
+        mockStorage.Setup(s => s.Load()).Returns(new List<CalendarEvent>());
+        var service = new CalendarEventService(mockStorage.Object);
 
         // Act
         var lastId = service.GetLastId();
@@ -198,7 +201,10 @@ public class CalendarEventServiceTest
             new DateTime(2027, 12, 01),
             new DateTime(2027, 12, 05));
 
-        ICalendarEventService calendarEventService = new CalendarEventService();
+        var mockStorage = new Mock<IStorageService<CalendarEvent>>();
+        mockStorage.Setup(s => s.Load()).Returns(new List<CalendarEvent>());
+
+        ICalendarEventService calendarEventService = new CalendarEventService(mockStorage.Object);
         calendarEventService.Add(calendarEvent1);
         calendarEventService.Add(calendarEvent2);
         calendarEventService.Add(calendarEvent3);
