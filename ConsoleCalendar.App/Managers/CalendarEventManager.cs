@@ -44,7 +44,7 @@ public class CalendarEventManager
             return;
         }
 
-        Console.WriteLine("Enter start date (dd-MM-yyyy [HH:mm[:ss]]): ");
+        Console.WriteLine("Enter end date (dd-MM-yyyy [HH:mm[:ss]]): ");
         var endDate = ParseDate(Console.ReadLine(), formats);
         Console.WriteLine();
 
@@ -120,48 +120,53 @@ public class CalendarEventManager
         var calendarEvent = calendarEventService.Get(id);
         if (calendarEvent == null)
         {
-            Console.WriteLine("\nCould not find calendarEvent of given id");
+            Console.WriteLine("\nCould not find calendar event of given id");
             return;
         }
 
         Console.WriteLine($"\nCurrent name: {calendarEvent.Name}");
-        Console.Write("Enter new name (or press Enter to keep): ");
+        Console.WriteLine("Enter new name (or press Enter to keep): ");
         var name = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(name))
             calendarEvent.Name = name;
 
         Console.WriteLine($"\nCurrent description: {calendarEvent.Description}");
-        Console.Write("Enter new description (or press Enter to keep): ");
+        Console.WriteLine("Enter new description (or press Enter to keep): ");
         var description = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(description))
             calendarEvent.Description = description;
 
         Console.WriteLine($"\nCurrent start date: {calendarEvent.StartDate}");
-        Console.Write("Enter new start date (dd-MM-yyyy [HH:mm[:ss]] or press Enter to keep): ");
+        Console.WriteLine("Enter new start date (dd-MM-yyyy [HH:mm[:ss]] or press Enter to keep): ");
         var startDateInput = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(startDateInput))
         {
             var parsedStart = ParseDate(startDateInput, formats);
             if (parsedStart == null)
             {
-                Console.WriteLine("Invalid start date format. Aborting edit.");
+                Console.WriteLine("Invalid start date format. Calendar event was not edited.");
                 return;
             }
             calendarEvent.StartDate = parsedStart.Value;
         }
 
         Console.WriteLine($"\nCurrent end date: {calendarEvent.EndDate}");
-        Console.Write("Enter new end date (dd-MM-yyyy [HH:mm[:ss]] or press Enter to keep): ");
+        Console.WriteLine("Enter new end date (dd-MM-yyyy [HH:mm[:ss]] or press Enter to keep): ");
         var endDateInput = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(endDateInput))
         {
             var parsedEnd = ParseDate(endDateInput, formats);
             if (parsedEnd == null)
             {
-                Console.WriteLine("Invalid end date format. Aborting edit.");
+                Console.WriteLine("Invalid end date format. Calendar event was not edited.");
                 return;
             }
             calendarEvent.EndDate = parsedEnd.Value;
+        }
+
+        if(calendarEvent.StartDate > calendarEvent.EndDate)
+        {
+            Console.WriteLine("New date range is not valid. Calendar event was not edited.");
         }
 
         var wasUpdated = calendarEventService.Update(id, calendarEvent);
@@ -235,11 +240,11 @@ public class CalendarEventManager
             var duration = calendarEvent.EndDate - calendarEvent.StartDate;
             table.AddRow(
                 calendarEvent.Id,
-                calendarEvent.Name,
-                calendarEvent.Description,
+                calendarEvent.Name.Truncate(20),
+                calendarEvent.Description.Truncate(50),
                 calendarEvent.StartDate.ToString(),
                 calendarEvent.EndDate.ToString(),
-                $"{(int)duration.TotalHours}h {duration.Minutes}m"
+                $"{duration.Days}d {(int)duration.Hours}h {duration.Minutes}m"
                 );
         }
         table.Write();
